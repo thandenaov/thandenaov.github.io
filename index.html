@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090d14">
+  <title>Danh Sách Skin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#090d14;
+      --panel:#111720;
+      --item:#151c27;
+      --item-hover:#192331;
+      --line:#222d3b;
+      --text:#f2f5f8;
+      --muted:#8996a8;
+      --green:#37d99b;
+      --green-soft:rgba(55,217,155,.11);
+    }
+
+    *{box-sizing:border-box}
+
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 50% -10%,#182333 0,#090d14 42%),
+        var(--bg);
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+
+    .wrap{
+      width:min(720px,calc(100% - 20px));
+      margin:auto;
+      padding:18px 0 55px;
+    }
+
+    .panel{
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(17,23,32,.96);
+      box-shadow:0 22px 60px rgba(0,0,0,.34);
+      animation:panelIn .55s ease both;
+    }
+
+    .top{
+      padding:22px 18px 18px;
+      border-bottom:1px solid var(--line);
+      text-align:center;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      margin-bottom:12px;
+      color:var(--green);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+    }
+
+    .status::before{
+      content:"";
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--green);
+      box-shadow:0 0 12px var(--green);
+      animation:pulse 1.8s infinite;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(21px,5vw,30px);
+      line-height:1.25;
+      letter-spacing:-.7px;
+    }
+
+    .sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .tools{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:9px;
+      padding:14px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .search{
+      position:relative;
+    }
+
+    .search input{
+      width:100%;
+      height:44px;
+      padding:0 42px 0 14px;
+      border:1px solid var(--line);
+      border-radius:11px;
+      outline:0;
+      background:#0d131c;
+      color:var(--text);
+      font:inherit;
+      font-size:13px;
+      transition:.2s;
+    }
+
+    .search input:focus{
+      border-color:rgba(55,217,155,.55);
+      box-shadow:0 0 0 3px rgba(55,217,155,.08);
+    }
+
+    .search input::placeholder{color:#697689}
+
+    .search-icon{
+      position:absolute;
+      right:14px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--green);
+    }
+
+    .copy{
+      height:44px;
+      padding:0 14px;
+      border:1px solid rgba(55,217,155,.28);
+      border-radius:11px;
+      background:var(--green-soft);
+      color:var(--green);
+      font:inherit;
+      font-size:12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 15px;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding:0 12px 16px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:104px minmax(0,1fr);
+      min-height:56px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:var(--item);
+      overflow:hidden;
+      opacity:0;
+      transform:translateY(10px);
+      transition:
+        opacity .4s ease,
+        transform .4s ease,
+        background .18s ease,
+        border-color .18s ease;
+    }
+
+    .row.show{
+      opacity:1;
+      transform:none;
+    }
+
+    .row:hover,
+    .row:active{
+      background:var(--item-hover);
+      border-color:rgba(55,217,155,.28);
+    }
+
+    .hero{
+      display:flex;
+      align-items:center;
+      padding:12px;
+      border-right:1px solid var(--line);
+      background:rgba(255,255,255,.018);
+      color:var(--green);
+      font-size:12px;
+      font-weight:700;
+      line-height:1.35;
+      word-break:break-word;
+    }
+
+    .skin{
+      display:flex;
+      align-items:center;
+      min-width:0;
+      padding:12px 14px;
+      color:#edf2f7;
+      font-size:13px;
+      font-weight:500;
+      line-height:1.5;
+      word-break:break-word;
+    }
+
+    .empty{
+      display:none;
+      padding:40px 15px;
+      color:var(--muted);
+      text-align:center;
+      font-size:13px;
+    }
+
+    .footer{
+      padding:17px;
+      border-top:1px solid var(--line);
+      color:#637084;
+      text-align:center;
+      font-size:11px;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:22px;
+      z-index:5;
+      padding:10px 14px;
+      border-radius:10px;
+      background:#eefbf6;
+      color:#14533c;
+      font-size:12px;
+      font-weight:700;
+      opacity:0;
+      visibility:hidden;
+      transform:translate(-50%,12px);
+      transition:.2s;
+      box-shadow:0 12px 30px rgba(0,0,0,.25);
+    }
+
+    .toast.show{
+      opacity:1;
+      visibility:visible;
+      transform:translate(-50%,0);
+    }
+
+    @keyframes panelIn{
+      from{opacity:0;transform:translateY(14px)}
+      to{opacity:1;transform:none}
+    }
+
+    @keyframes pulse{
+      50%{opacity:.35;transform:scale(.8)}
+    }
+
+    @media(max-width:520px){
+      .wrap{width:calc(100% - 12px);padding-top:6px}
+      .panel{border-radius:14px}
+      .top{padding:20px 14px 16px}
+      .tools{grid-template-columns:1fr}
+      .copy{width:100%}
+      .row{grid-template-columns:88px minmax(0,1fr)}
+      .hero{padding:10px;font-size:11.5px}
+      .skin{padding:11px 12px;font-size:12.5px}
+    }
+
+    @media(max-width:360px){
+      .row{grid-template-columns:78px minmax(0,1fr)}
+      .hero{font-size:11px;padding:9px}
+      .skin{font-size:12px;padding:10px}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+      .row{opacity:1;transform:none}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="panel">
+      <header class="top">
+        <div class="status">Danh sách đã cập nhật</div>
+        <h1>List Skin Bị Ảo Khi Dùng Unlock</h1>
+        <p class="sub">Tên tướng và tên skin được căn thẳng hàng để dễ đọc hơn.</p>
+      </header>
+
+      <div class="tools">
+        <label class="search">
+          <input id="searchInput" type="search" placeholder="Tìm tướng hoặc skin..." autocomplete="off">
+          <span class="search-icon">⌕</span>
+        </label>
+        <button class="copy" id="copyBtn">Sao chép danh sách</button>
+      </div>
+
+      <div class="meta">
+        <span id="countText"></span>
+        <span>Sắp xếp theo tên tướng</span>
+      </div>
+
+      <div class="list" id="list"></div>
+      <div class="empty" id="empty">Không tìm thấy skin phù hợp.</div>
+
+      <footer class="footer">Thần Đèn AOV</footer>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Đã sao chép danh sách</div>
+
+  <script>
+    const data = [
+      ["Airi","Bích Hải Thánh Nữ"],
+      ["Aoi","Mikasa"],
+      ["Aya","Công Chúa Cầu Vồng"],
+      ["Baron","Thiên Phù - Tư Mệnh"],
+      ["Bijan","Lữ Hành Thời Không"],
+      ["Billow","Thiên Tướng - Độ Ách"],
+      ["Capheny","Càn Nguyên Điện Chủ"],
+      ["Cresh","Eren"],
+      ["Dolia","Mã Khởi Thiên Ca"],
+      ["Eland'orr","Mộng Giới Yêu Chủ"],
+      ["Erin","Nguyệt Ảnh Minh Điệp"],
+      ["Hayate","Siêu Đạo Chích Kid"],
+      ["Hayate","Tu Di Thánh Đế"],
+      ["Iggy","Rimuru"],
+      ["Ilumia","Lưỡng Nghi Long Hậu"],
+      ["Krixi","Phù Thủy Thời Không"],
+      ["Krixi","Tatsumaki Lốc Xoáy Kinh Hoàng"],
+      ["Lauriel","Mã Đăng Cứu Thế"],
+      ["Lauriel","Thứ Nguyên Vệ Thần"],
+      ["Nakroth","Bạch Diện Chiến Thương"],
+      ["Nakroth","Levi"],
+      ["Nakroth","Quỷ Thương Liệt Đế"],
+      ["Pain","Megumi Fushiguro"],
+      ["Qi","Milim Nava"],
+      ["Stuart","Siêu Trùm Phản Diện"],
+      ["Tel'Annas","Lân Quang Thánh Điệu"],
+      ["Tel'Annas","Tân Niên Vệ Thần"],
+      ["Tel'Annas","Thần Sứ F.E.E-X1"],
+      ["Tulen","Thiên Cơ Bạch Trạch"],
+      ["Veera","Thất Sát - Thượng Sinh"],
+      ["Veres","Lưu Ly Long Mẫu"],
+      ["Violet","Huyết Ma Thần"],
+      ["Violet","Nobara Kugisaki"],
+      ["Violet","Thần Long Tỷ Tỷ"],
+      ["Violet","Vọng Nguyệt Long Cơ"],
+      ["Violet","Vợ Người Ta"],
+      ["Yorn","Conan Edogawa"],
+      ["Yue","Trảm Kim Ánh Nguyệt"],
+      ["Điêu Thuyền","Nhật Nguyệt Thánh Linh"]
+    ];
+
+    const list = document.getElementById("list");
+    const input = document.getElementById("searchInput");
+    const countText = document.getElementById("countText");
+    const empty = document.getElementById("empty");
+    const copyBtn = document.getElementById("copyBtn");
+    const toast = document.getElementById("toast");
+
+    function normal(text){
+      return text.normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/đ/g,"d")
+        .replace(/Đ/g,"D")
+        .toLowerCase();
+    }
+
+    function render(keyword=""){
+      const q = normal(keyword.trim());
+      const filtered = data.filter(([hero,skin]) =>
+        normal(hero+" "+skin).includes(q)
+      );
+
+      list.innerHTML="";
+
+      filtered.forEach(([hero,skin],index)=>{
+        const row=document.createElement("div");
+        row.className="row";
+        row.innerHTML=`
+          <div class="hero">${hero}</div>
+          <div class="skin">${skin}</div>
+        `;
+        list.appendChild(row);
+
+        requestAnimationFrame(()=>{
+          setTimeout(()=>row.classList.add("show"),Math.min(index*28,260));
+        });
+      });
+
+      countText.textContent=q
+        ? `Tìm thấy ${filtered.length} skin`
+        : `Tổng cộng ${data.length} skin`;
+
+      empty.style.display=filtered.length ? "none" : "block";
+    }
+
+    input.addEventListener("input",e=>render(e.target.value));
+
+    copyBtn.addEventListener("click",async()=>{
+      const text=data.map(([hero,skin])=>`${hero} ${skin}`).join("\n");
+      try{
+        await navigator.clipboard.writeText(text);
+        toast.classList.add("show");
+        setTimeout(()=>toast.classList.remove("show"),1600);
+      }catch{
+        alert("Trình duyệt không cho phép sao chép tự động.");
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
