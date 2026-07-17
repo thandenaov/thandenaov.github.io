@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07101d">
+
+  <title>Danh Sách Skin</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 22px 12px 60px;
+
+      background:
+        radial-gradient(circle at top, #172a43 0, #0b1626 35%, #050a12 100%);
+
+      color: #d8e0ea;
+
+      font-family:
+        "Courier New",
+        Courier,
+        monospace;
+    }
+
+    .page {
+      width: min(760px, 100%);
+      margin: 0 auto;
+    }
+
+    .terminal {
+      overflow: hidden;
+
+      border: 1px solid rgba(92, 119, 148, 0.35);
+      border-radius: 14px;
+
+      background: rgba(8, 16, 29, 0.94);
+
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.5),
+        inset 0 1px rgba(255, 255, 255, 0.03);
+
+      animation: openTerminal 0.7s ease both;
+    }
+
+    .terminal-bar {
+      min-height: 48px;
+      padding: 0 16px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      border-bottom: 1px solid rgba(92, 119, 148, 0.25);
+
+      background: rgba(3, 8, 16, 0.78);
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .red {
+      background: #ff5f57;
+    }
+
+    .yellow {
+      background: #febc2e;
+    }
+
+    .green {
+      background: #28c840;
+    }
+
+    .terminal-name {
+      color: #708197;
+      font-size: 11px;
+    }
+
+    .content {
+      padding: 24px 18px 34px;
+    }
+
+    .title {
+      width: fit-content;
+      max-width: 100%;
+
+      margin: 0 auto 12px;
+      padding: 8px 14px;
+
+      border: 1px solid #13a975;
+      border-radius: 6px;
+
+      background: rgba(19, 169, 117, 0.08);
+
+      color: #36e6aa;
+      font-size: 15px;
+      font-weight: 500;
+      text-align: center;
+
+      box-shadow: 0 0 18px rgba(54, 230, 170, 0.1);
+
+      animation: titleGlow 2.5s ease-in-out infinite;
+    }
+
+    .total {
+      margin-bottom: 26px;
+
+      color: #718096;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .search-box {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 44px;
+
+      padding: 0 45px 0 15px;
+
+      border: 1px solid rgba(75, 102, 132, 0.45);
+      border-radius: 8px;
+      outline: none;
+
+      background: rgba(13, 25, 42, 0.9);
+
+      color: #e9f0f8;
+      font-family: inherit;
+      font-size: 13px;
+
+      transition: 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: #25cc92;
+      box-shadow: 0 0 15px rgba(37, 204, 146, 0.12);
+    }
+
+    .search-box input::placeholder {
+      color: #617086;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+
+      transform: translateY(-50%);
+
+      color: #25cc92;
+      font-size: 16px;
+    }
+
+    .hero-group {
+      margin-bottom: 27px;
+    }
+
+    .hero-title {
+      margin-bottom: 12px;
+      padding-bottom: 7px;
+
+      border-bottom: 1px dashed rgba(63, 208, 154, 0.32);
+
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .hero-title::before {
+      content: "# ";
+      color: #28d99a;
+    }
+
+    .skin-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+
+      list-style: none;
+    }
+
+    .skin-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+
+      padding: 4px 0;
+
+      color: #c7d1df;
+      font-size: 13px;
+      line-height: 1.5;
+
+      opacity: 0;
+      transform: translateX(-14px);
+
+      animation: showItem 0.4s ease forwards;
+    }
+
+    .arrow {
+      flex: 0 0 auto;
+
+      color: #27d99a;
+      font-weight: bold;
+
+      text-shadow: 0 0 9px rgba(39, 217, 154, 0.5);
+
+      animation: arrowMove 1.3s ease-in-out infinite;
+    }
+
+    .skin-item:hover {
+      color: #ffffff;
+      transform: translateX(4px);
+      transition: 0.2s;
+    }
+
+    .empty {
+      display: none;
+
+      padding: 32px 10px;
+
+      color: #718096;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 30px;
+
+      color: #58677a;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .cursor {
+      display: inline-block;
+
+      width: 7px;
+      height: 13px;
+      margin-left: 4px;
+
+      vertical-align: middle;
+
+      background: #2ce6a3;
+
+      animation: blink 0.8s steps(2) infinite;
+    }
+
+    @keyframes openTerminal {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.985);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes showItem {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes arrowMove {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      50% {
+        transform: translateX(4px);
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes titleGlow {
+      0%,
+      100% {
+        box-shadow: 0 0 8px rgba(54, 230, 170, 0.08);
+      }
+
+      50% {
+        box-shadow: 0 0 22px rgba(54, 230, 170, 0.2);
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 14px 8px 40px;
+      }
+
+      .terminal {
+        border-radius: 10px;
+      }
+
+      .content {
+        padding: 20px 14px 28px;
+      }
+
+      .title {
+        font-size: 13px;
+      }
+
+      .hero-title {
+        font-size: 13px;
+      }
+
+      .skin-item {
+        font-size: 12.5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <section class="terminal">
+
+      <div class="terminal-bar">
+
+        <div class="dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+
+        <div class="terminal-name">
+          thandenaov@skin-list
+        </div>
+
+      </div>
+
+      <div class="content">
+
+        <h1 class="title">
+          List Skin Bị Ảo Khi Dùng Unlock
+        </h1>
+
+        <div class="total" id="totalText"></div>
+
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Nhập tên tướng hoặc tên skin..."
+            autocomplete="off"
+          >
+
+          <span class="search-icon">⌕</span>
+        </div>
+
+        <div id="skinContainer"></div>
+
+        <div class="empty" id="emptyMessage">
+          Không tìm thấy skin phù hợp.
+        </div>
+
+        <div class="footer">
+          Thần Đèn AOV
+          <span class="cursor"></span>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    const skinData = [
+      {
+        hero: "Airi",
+        skins: [
+          "Airi Bích Hải Thánh Nữ"
+        ]
+      },
+      {
+        hero: "Aoi",
+        skins: [
+          "Aoi Mikasa"
+        ]
+      },
+      {
+        hero: "Aya",
+        skins: [
+          "Aya Công Chúa Cầu Vồng"
+        ]
+      },
+      {
+        hero: "Baron",
+        skins: [
+          "Baron Thiên Phù - Tư Mệnh"
+        ]
+      },
+      {
+        hero: "Bijan",
+        skins: [
+          "Bijan Lữ Hành Thời Không"
+        ]
+      },
+      {
+        hero: "Billow",
+        skins: [
+          "Billow Thiên Tướng - Độ Ách"
+        ]
+      },
+      {
+        hero: "Capheny",
+        skins: [
+          "Capheny Càn Nguyên Điện Chủ"
+        ]
+      },
+      {
+        hero: "Cresh",
+        skins: [
+          "Cresh Eren"
+        ]
+      },
+      {
+        hero: "Dolia",
+        skins: [
+          "Dolia Mã Khởi Thiên Ca"
+        ]
+      },
+      {
+        hero: "Eland'orr",
+        skins: [
+          "Eland'orr Mộng Giới Yêu Chủ"
+        ]
+      },
+      {
+        hero: "Erin",
+        skins: [
+          "Erin Nguyệt Ảnh Minh Điệp"
+        ]
+      },
+      {
+        hero: "Hayate",
+        skins: [
+          "Hayate Tu Di Thánh Đế",
+          "Hayate Siêu Đạo Chích Kid"
+        ]
+      },
+      {
+        hero: "Iggy",
+        skins: [
+          "Iggy Rimuru"
+        ]
+      },
+      {
+        hero: "Ilumia",
+        skins: [
+          "Ilumia Lưỡng Nghi Long Hậu"
+        ]
+      },
+      {
+        hero: "Krixi",
+        skins: [
+          "Krixi Phù Thủy Thời Không",
+          "Krixi Tatsumaki Lốc Xoáy Kinh Hoàng"
+        ]
+      },
+      {
+        hero: "Lauriel",
+        skins: [
+          "Lauriel Thứ Nguyên Vệ Thần",
+          "Lauriel Mã Đăng Cứu Thế"
+        ]
+      },
+      {
+        hero: "Nakroth",
+        skins: [
+          "Nakroth Bạch Diện Chiến Thương",
+          "Nakroth Quỷ Thương Liệt Đế",
+          "Nakroth Levi"
+        ]
+      },
+      {
+        hero: "Pain",
+        skins: [
+          "Pain Megumi Fushiguro"
+        ]
+      },
+      {
+        hero: "Qi",
+        skins: [
+          "Qi Milim Nava"
+        ]
+      },
+      {
+        hero: "Stuart",
+        skins: [
+          "Stuart Siêu Trùm Phản Diện"
+        ]
+      },
+      {
+        hero: "Tel'Annas",
+        skins: [
+          "Tel'Annas Lân Quang Thánh Điệu",
+          "Tel'Annas Tân Niên Vệ Thần",
+          "Tel'Annas Thần Sứ F.E.E-X1"
+        ]
+      },
+      {
+        hero: "Tulen",
+        skins: [
+          "Tulen Thiên Cơ Bạch Trạch"
+        ]
+      },
+      {
+        hero: "Veera",
+        skins: [
+          "Veera Thất Sát - Thượng Sinh"
+        ]
+      },
+      {
+        hero: "Veres",
+        skins: [
+          "Veres Lưu Ly Long Mẫu"
+        ]
+      },
+      {
+        hero: "Violet",
+        skins: [
+          "Violet Thần Long Tỷ Tỷ",
+          "Violet Huyết Ma Thần",
+          "Violet Vọng Nguyệt Long Cơ",
+          "Violet Vợ Người Ta",
+          "Violet Nobara Kugisaki"
+        ]
+      },
+      {
+        hero: "Yorn",
+        skins: [
+          "Yorn Conan Edogawa"
+        ]
+      },
+      {
+        hero: "Yue",
+        skins: [
+          "Yue Trảm Kim Ánh Nguyệt"
+        ]
+      },
+      {
+        hero: "Điêu Thuyền",
+        skins: [
+          "Điêu Thuyền Nhật Nguyệt Thánh Linh"
+        ]
+      }
+    ];
+
+    const skinContainer = document.getElementById("skinContainer");
+    const searchInput = document.getElementById("searchInput");
+    const emptyMessage = document.getElementById("emptyMessage");
+    const totalText = document.getElementById("totalText");
+
+    function removeVietnamese(text) {
+      return text
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d")
+        .replace(/Đ/g, "D")
+        .toLowerCase();
+    }
+
+    function countSkins() {
+      return skinData.reduce(
+        (total, group) => total + group.skins.length,
+        0
+      );
+    }
+
+    function renderSkins(keyword = "") {
+      skinContainer.innerHTML = "";
+
+      const normalizedKeyword = removeVietnamese(keyword.trim());
+
+      let visibleCount = 0;
+      let animationIndex = 0;
+
+      skinData.forEach(group => {
+        const matchedSkins = group.skins.filter(skin => {
+          const searchContent = removeVietnamese(
+            group.hero + " " + skin
+          );
+
+          return searchContent.includes(normalizedKeyword);
+        });
+
+        if (matchedSkins.length === 0) {
+          return;
+        }
+
+        visibleCount += matchedSkins.length;
+
+        const groupElement = document.createElement("section");
+        groupElement.className = "hero-group";
+
+        const heroTitle = document.createElement("h2");
+        heroTitle.className = "hero-title";
+        heroTitle.textContent = group.hero;
+
+        const list = document.createElement("ul");
+        list.className = "skin-list";
+
+        matchedSkins.forEach(skin => {
+          const item = document.createElement("li");
+
+          item.className = "skin-item";
+          item.style.animationDelay =
+            `${Math.min(animationIndex * 0.045, 1.5)}s`;
+
+          item.innerHTML = `
+            <span class="arrow">➜</span>
+            <span>${skin}</span>
+          `;
+
+          list.appendChild(item);
+          animationIndex++;
+        });
+
+        groupElement.appendChild(heroTitle);
+        groupElement.appendChild(list);
+        skinContainer.appendChild(groupElement);
+      });
+
+      emptyMessage.style.display =
+        visibleCount === 0 ? "block" : "none";
+
+      if (normalizedKeyword) {
+        totalText.textContent =
+          `Tìm thấy ${visibleCount} skin`;
+      } else {
+        totalText.textContent =
+          `Tổng cộng ${countSkins()} skin`;
+      }
+    }
+
+    searchInput.addEventListener("input", event => {
+      renderSkins(event.target.value);
+    });
+
+    renderSkins();
+  </script>
+
+</body>
+  </html>
