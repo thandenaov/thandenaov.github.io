@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <title>Danh Sách Skin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:rgba(10,21,36,.82);
+      --panel-2:rgba(17,31,50,.78);
+      --line:rgba(113,142,177,.18);
+      --text:#eef4fb;
+      --muted:#90a0b5;
+      --green:#2be3a0;
+      --green-soft:rgba(43,227,160,.14);
+      --shadow:0 24px 80px rgba(0,0,0,.42);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(28,63,103,.34), transparent 34%),
+        radial-gradient(circle at 85% 15%, rgba(28,145,116,.16), transparent 26%),
+        linear-gradient(180deg,#0a1627 0%,#07111f 42%,#050b14 100%);
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      overflow-x:hidden;
+    }
+
+    .bg-grid{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:32px 32px;
+      mask-image:linear-gradient(to bottom,black,transparent 90%);
+    }
+
+    .orb{
+      position:fixed;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      filter:blur(70px);
+      opacity:.16;
+      pointer-events:none;
+      animation:float 10s ease-in-out infinite;
+    }
+
+    .orb.one{top:8%;left:-80px;background:#2d7be7}
+    .orb.two{right:-80px;top:42%;background:#22d39a;animation-delay:-4s}
+
+    .wrap{
+      width:min(760px,calc(100% - 24px));
+      margin:auto;
+      padding:28px 0 70px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background:var(--panel);
+      backdrop-filter:blur(18px);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      animation:cardIn .8s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .topbar{
+      min-height:58px;
+      padding:0 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:1px solid var(--line);
+      background:rgba(4,10,18,.55);
+    }
+
+    .dots{display:flex;gap:8px}
+    .dot{width:11px;height:11px;border-radius:50%}
+    .dot.red{background:#ff5f57}
+    .dot.yellow{background:#febc2e}
+    .dot.green{background:#28c840}
+
+    .brand{
+      color:#73849a;
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:.4px;
+    }
+
+    .content{padding:26px 18px 30px}
+
+    .hero{text-align:center;margin-bottom:22px}
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 14px;
+      border:1px solid rgba(43,227,160,.38);
+      border-radius:999px;
+      color:var(--green);
+      background:rgba(43,227,160,.08);
+      font-size:12px;
+      font-weight:700;
+      box-shadow:0 0 25px rgba(43,227,160,.09);
+      animation:pulse 2.4s ease-in-out infinite;
+    }
+
+    .hero h1{
+      margin:16px 0 8px;
+      font-size:clamp(24px,6vw,36px);
+      line-height:1.15;
+      letter-spacing:-1px;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .tools{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      margin:22px 0;
+    }
+
+    .search{
+      position:relative;
+    }
+
+    .search input{
+      width:100%;
+      height:48px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:0 46px 0 15px;
+      background:var(--panel-2);
+      color:var(--text);
+      outline:none;
+      font:inherit;
+      font-size:14px;
+      transition:.2s ease;
+    }
+
+    .search input:focus{
+      border-color:rgba(43,227,160,.65);
+      box-shadow:0 0 0 4px rgba(43,227,160,.08);
+      transform:translateY(-1px);
+    }
+
+    .search input::placeholder{color:#718096}
+
+    .search span{
+      position:absolute;
+      right:15px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--green);
+      font-size:18px;
+    }
+
+    .copy-btn{
+      min-width:112px;
+      border:0;
+      border-radius:14px;
+      padding:0 16px;
+      background:linear-gradient(135deg,#27d99a,#19b980);
+      color:#03130d;
+      font:inherit;
+      font-size:13px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 12px 28px rgba(34,211,154,.18);
+      transition:.2s ease;
+    }
+
+    .copy-btn:active{transform:scale(.97)}
+
+    .summary{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:0 2px 14px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .skin{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:54px;
+      padding:13px 14px;
+      border:1px solid rgba(113,142,177,.14);
+      border-radius:15px;
+      background:rgba(15,28,46,.66);
+      color:#edf3fa;
+      font-size:14px;
+      line-height:1.45;
+      opacity:0;
+      transform:translateY(18px);
+      transition:
+        opacity .5s ease,
+        transform .5s ease,
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+    }
+
+    .skin.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .skin:hover,
+    .skin:active{
+      border-color:rgba(43,227,160,.38);
+      background:rgba(21,39,61,.9);
+      box-shadow:0 10px 28px rgba(0,0,0,.18),0 0 0 1px rgba(43,227,160,.04);
+      transform:translateY(-2px);
+    }
+
+    .icon{
+      width:28px;
+      height:28px;
+      flex:0 0 28px;
+      display:grid;
+      place-items:center;
+      border-radius:10px;
+      background:var(--green-soft);
+      color:var(--green);
+      font-weight:900;
+      box-shadow:inset 0 0 0 1px rgba(43,227,160,.16);
+    }
+
+    .name{font-weight:600}
+
+    .empty{
+      display:none;
+      padding:38px 12px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .footer{
+      margin-top:24px;
+      text-align:center;
+      color:#617086;
+      font-size:12px;
+    }
+
+    .backtop{
+      position:fixed;
+      right:18px;
+      bottom:22px;
+      width:46px;
+      height:46px;
+      border:1px solid rgba(43,227,160,.28);
+      border-radius:15px;
+      background:rgba(8,18,31,.88);
+      color:var(--green);
+      font-size:20px;
+      backdrop-filter:blur(14px);
+      box-shadow:0 14px 35px rgba(0,0,0,.28);
+      opacity:0;
+      visibility:hidden;
+      transform:translateY(12px);
+      transition:.25s;
+    }
+
+    .backtop.show{
+      opacity:1;
+      visibility:visible;
+      transform:translateY(0);
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:26px;
+      transform:translate(-50%,20px);
+      background:#eafaf4;
+      color:#0b4733;
+      padding:11px 15px;
+      border-radius:12px;
+      font-size:13px;
+      font-weight:700;
+      opacity:0;
+      visibility:hidden;
+      transition:.25s;
+      z-index:10;
+      box-shadow:0 14px 35px rgba(0,0,0,.28);
+    }
+
+    .toast.show{
+      opacity:1;
+      visibility:visible;
+      transform:translate(-50%,0);
+    }
+
+    @keyframes cardIn{
+      from{opacity:0;transform:translateY(22px) scale(.985)}
+      to{opacity:1;transform:none}
+    }
+
+    @keyframes pulse{
+      0%,100%{box-shadow:0 0 0 0 rgba(43,227,160,.05)}
+      50%{box-shadow:0 0 28px rgba(43,227,160,.18)}
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(28px)}
+    }
+
+    @media (max-width:560px){
+      .wrap{width:min(100% - 14px,760px);padding-top:10px}
+      .card{border-radius:18px}
+      .topbar{min-height:52px;padding:0 14px}
+      .content{padding:22px 12px 24px}
+      .tools{grid-template-columns:1fr}
+      .copy-btn{height:46px}
+      .skin{font-size:13px;padding:12px}
+      .hero h1{font-size:25px}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        animation:none!important;
+        transition:none!important;
+        scroll-behavior:auto!important;
+      }
+      .skin{opacity:1;transform:none}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-grid"></div>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="topbar">
+        <div class="dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="brand">THẦN ĐÈN AOV</div>
+      </div>
+
+      <div class="content">
+        <header class="hero">
+          <div class="badge">✦ DANH SÁCH CẬP NHẬT</div>
+          <h1>List Skin Bị Ảo Khi Dùng Unlock</h1>
+          <p>Các skin cùng tướng đã được xếp gần nhau để dễ tìm.</p>
+        </header>
+
+        <div class="tools">
+          <label class="search">
+            <input id="searchInput" type="search" placeholder="Tìm tên tướng hoặc tên skin..." autocomplete="off">
+            <span>⌕</span>
+          </label>
+          <button class="copy-btn" id="copyBtn">Sao chép tất cả</button>
+        </div>
+
+        <div class="summary">
+          <span id="resultText">Đang tải danh sách...</span>
+          <span>Vuốt xuống để xem</span>
+        </div>
+
+        <div class="list" id="skinList"></div>
+        <div class="empty" id="emptyState">Không tìm thấy skin phù hợp.</div>
+
+        <div class="footer">© Thần Đèn AOV</div>
+      </div>
+    </section>
+  </main>
+
+  <button class="backtop" id="backTop" aria-label="Lên đầu trang">↑</button>
+  <div class="toast" id="toast">Đã sao chép danh sách</div>
+
+  <script>
+    const skins = [
+      "Airi Bích Hải Thánh Nữ",
+      "Aoi Mikasa",
+      "Aya Công Chúa Cầu Vồng",
+      "Baron Thiên Phù - Tư Mệnh",
+      "Bijan Lữ Hành Thời Không",
+      "Billow Thiên Tướng - Độ Ách",
+      "Capheny Càn Nguyên Điện Chủ",
+      "Cresh Eren",
+      "Dolia Mã Khởi Thiên Ca",
+      "Eland'orr Mộng Giới Yêu Chủ",
+      "Erin Nguyệt Ảnh Minh Điệp",
+      "Hayate Siêu Đạo Chích Kid",
+      "Hayate Tu Di Thánh Đế",
+      "Iggy Rimuru",
+      "Ilumia Lưỡng Nghi Long Hậu",
+      "Krixi Phù Thủy Thời Không",
+      "Krixi Tatsumaki Lốc Xoáy Kinh Hoàng",
+      "Lauriel Mã Đăng Cứu Thế",
+      "Lauriel Thứ Nguyên Vệ Thần",
+      "Nakroth Bạch Diện Chiến Thương",
+      "Nakroth Levi",
+      "Nakroth Quỷ Thương Liệt Đế",
+      "Pain Megumi Fushiguro",
+      "Qi Milim Nava",
+      "Stuart Siêu Trùm Phản Diện",
+      "Tel'Annas Lân Quang Thánh Điệu",
+      "Tel'Annas Tân Niên Vệ Thần",
+      "Tel'Annas Thần Sứ F.E.E-X1",
+      "Tulen Thiên Cơ Bạch Trạch",
+      "Veera Thất Sát - Thượng Sinh",
+      "Veres Lưu Ly Long Mẫu",
+      "Violet Huyết Ma Thần",
+      "Violet Nobara Kugisaki",
+      "Violet Thần Long Tỷ Tỷ",
+      "Violet Vọng Nguyệt Long Cơ",
+      "Violet Vợ Người Ta",
+      "Yorn Conan Edogawa",
+      "Yue Trảm Kim Ánh Nguyệt",
+      "Điêu Thuyền Nhật Nguyệt Thánh Linh"
+    ];
+
+    const listEl = document.getElementById("skinList");
+    const searchInput = document.getElementById("searchInput");
+    const resultText = document.getElementById("resultText");
+    const emptyState = document.getElementById("emptyState");
+    const copyBtn = document.getElementById("copyBtn");
+    const toast = document.getElementById("toast");
+    const backTop = document.getElementById("backTop");
+
+    const normalizeText = text =>
+      text.normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/đ/g, "d")
+          .replace(/Đ/g, "D")
+          .toLowerCase();
+
+    function render(keyword = "") {
+      listEl.innerHTML = "";
+
+      const query = normalizeText(keyword.trim());
+      const filtered = skins.filter(name =>
+        normalizeText(name).includes(query)
+      );
+
+      filtered.forEach(name => {
+        const item = document.createElement("div");
+        item.className = "skin";
+        item.innerHTML = `
+          <span class="icon">›</span>
+          <span class="name">${name}</span>
+        `;
+        listEl.appendChild(item);
+      });
+
+      resultText.textContent = query
+        ? `Tìm thấy ${filtered.length} skin`
+        : `Tổng cộng ${skins.length} skin`;
+
+      emptyState.style.display = filtered.length ? "none" : "block";
+
+      observeItems();
+    }
+
+    function observeItems() {
+      const items = document.querySelectorAll(".skin");
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const siblings = [...items];
+            const index = siblings.indexOf(entry.target);
+            entry.target.style.transitionDelay = `${Math.min(index * 35, 280)}ms`;
+            entry.target.classList.add("show");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      items.forEach(item => observer.observe(item));
+    }
+
+    searchInput.addEventListener("input", e => render(e.target.value));
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(skins.join("\n"));
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 1800);
+      } catch {
+        alert("Không thể sao chép tự động trên trình duyệt này.");
+      }
+    });
+
+    window.addEventListener("scroll", () => {
+      backTop.classList.toggle("show", window.scrollY > 450);
+    });
+
+    backTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    render();
+  </script>
+</body>
+</html>
