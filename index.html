@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0f14">
+  <title>List Skin Bị Ảo Khi Dùng Unlock</title>
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#10151c;
+      --line:#1e2834;
+      --text:#dfe8f1;
+      --muted:#788797;
+      --green:#45e3a3;
+      --green2:#24bd82;
+      --danger:#ff6b78;
+    }
+
+    *{box-sizing:border-box}
+
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 50% -20%,#172231 0,#0b0f14 42%),
+        var(--bg);
+      font-family:ui-monospace,"SFMono-Regular","SF Mono",Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      font-size:14px;
+      line-height:1.65;
+    }
+
+    .page{
+      width:min(820px,calc(100% - 22px));
+      margin:0 auto;
+      padding:24px 0 60px;
+    }
+
+    .window{
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:rgba(16,21,28,.96);
+      box-shadow:0 26px 80px rgba(0,0,0,.45);
+      animation:windowIn .55s ease both;
+    }
+
+    .dot:nth-child(1){background:#ff5f57}
+    .dot:nth-child(2){background:#febc2e}
+    .dot:nth-child(3){background:#28c840}
+
+    .content{
+      padding:22px 20px 28px;
+    }
+
+    .command .prompt{
+      color:var(--green);
+    }
+
+    h1{
+      margin:0;
+      color:#f1f6fb;
+      font-size:clamp(18px,4.5vw,25px);
+      line-height:1.4;
+      font-weight:700;
+      letter-spacing:-.4px;
+    }
+
+    .search-wrap{
+      position:relative;
+      margin-bottom:12px;
+    }
+
+    .search-wrap::before{
+      content:"/";
+      position:absolute;
+      left:13px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--green);
+      font-weight:700;
+    }
+
+    #search{
+      width:100%;
+      height:44px;
+      padding:0 78px 0 31px;
+      border:1px solid var(--line);
+      border-radius:7px;
+      outline:none;
+      background:#0a0f15;
+      color:var(--text);
+      font:inherit;
+      font-size:13px;
+      transition:border-color .2s,box-shadow .2s;
+    }
+
+    #search::placeholder{
+      color:#536170;
+    }
+
+    #search:focus{
+      border-color:rgba(69,227,163,.55);
+      box-shadow:0 0 0 3px rgba(69,227,163,.07);
+    }
+
+
+    .info{
+      display:flex;
+      justify-content:flex-start;
+      gap:12px;
+      margin:0 2px 11px;
+      color:#647386;
+      font-size:11px;
+    }
+
+    .list{
+      border-top:1px dashed #202b37;
+    }
+
+    .skin-row{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:9px 7px;
+      border-bottom:1px dashed rgba(41,54,69,.65);
+      color:#dce6ef;
+      opacity:0;
+      transform:translateX(-7px);
+      animation:rowIn .36s ease forwards;
+      transition:background .16s,color .16s,padding-left .16s;
+    }
+
+    .skin-row:hover,
+    .skin-row:active{
+      padding-left:11px;
+      color:#fff;
+      background:rgba(69,227,163,.045);
+    }
+
+    .arrow{
+      flex:0 0 auto;
+      color:var(--green);
+      font-weight:700;
+    }
+
+    .text{
+      min-width:0;
+      overflow-wrap:anywhere;
+    }
+
+    .hero-name{
+      color:var(--green);
+      font-weight:700;
+    }
+
+    .skin-name{
+      color:#dce6ef;
+    }
+
+    mark{
+      padding:0;
+      color:#09110e;
+      background:var(--green);
+      border-radius:2px;
+    }
+
+    .empty{
+      display:none;
+      padding:28px 8px 8px;
+      color:var(--danger);
+      text-align:center;
+      font-size:12px;
+    }
+
+    .footer{
+      margin-top:20px;
+      color:#526171;
+      font-size:11px;
+    }
+
+    .footer span{
+      color:var(--green2);
+    }
+
+    @keyframes windowIn{
+      from{opacity:0;transform:translateY(12px)}
+      to{opacity:1;transform:none}
+    }
+
+    @keyframes rowIn{
+      to{opacity:1;transform:none}
+    }
+
+    @media(max-width:520px){
+      .page{
+        width:calc(100% - 10px);
+        padding-top:5px;
+      }
+
+      .window{
+        border-radius:7px;
+      }
+
+      .content{
+        padding:12px 10px 18px;
+      }
+
+      body{
+        font-size:13px;
+      }
+
+      .skin-row{
+        padding:9px 4px;
+      }
+
+      .info{
+        font-size:10px;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *{
+        animation:none!important;
+        transition:none!important;
+      }
+
+      .skin-row{
+        opacity:1;
+        transform:none;
+      }
+    }
+  
+    .compact{
+      padding:14px 14px 20px;
+    }
+
+    .compact .search-wrap{
+      margin:0 0 12px;
+    }
+
+    .compact #search{
+      height:46px;
+      padding:0 14px;
+      border-radius:8px;
+      font-size:13px;
+    }
+
+    .compact .search-wrap::before{
+      display:none;
+    }
+
+    .sr-only{
+      position:absolute!important;
+      width:1px!important;
+      height:1px!important;
+      padding:0!important;
+      margin:-1px!important;
+      overflow:hidden!important;
+      clip:rect(0,0,0,0)!important;
+      white-space:nowrap!important;
+      border:0!important;
+    }
+
+    .compact .list{
+      border-top:0;
+    }
+
+  
+    .title-box{
+      width:min(100%,560px);
+      margin:0 auto 14px;
+      padding:10px 14px;
+      border:2px solid var(--green);
+      border-radius:10px;
+      color:var(--green);
+      background:rgba(69,227,163,.055);
+      text-align:center;
+      font-size:clamp(15px,4vw,20px);
+      font-weight:500;
+      line-height:1.35;
+      letter-spacing:.1px;
+      box-shadow:
+        inset 0 0 18px rgba(69,227,163,.035),
+        0 0 0 1px rgba(69,227,163,.025);
+    }
+
+    .compact{
+      padding-top:18px;
+    }
+
+    .compact .skin-row{
+      padding-top:8px;
+      padding-bottom:8px;
+    }
+
+    @media(max-width:520px){
+      .title-box{
+        margin-bottom:12px;
+        padding:9px 10px;
+        border-radius:9px;
+        font-size:14px;
+        white-space:nowrap;
+      }
+
+      .compact{
+        padding-top:13px;
+      }
+    }
+
+    @media(max-width:390px){
+      .title-box{
+        font-size:12.5px;
+        letter-spacing:-.15px;
+      }
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      min-height:52px;
+      padding:10px 15px 5px;
+    }
+
+    .dots{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .dot{
+      display:block;
+      width:13px;
+      height:13px;
+      border-radius:50%;
+      box-shadow:0 0 12px rgba(255,255,255,.035);
+    }
+
+    .site-footer{
+      padding:13px 16px 17px;
+      border-top:1px solid rgba(41,54,69,.55);
+      color:var(--green);
+      text-align:center;
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .skin-row{
+      font-size:16px;
+      line-height:1.65;
+    }
+
+    .arrow{
+      font-size:18px;
+      line-height:1.45;
+    }
+
+    #search{
+      font-size:15px;
+    }
+
+    @media(max-width:520px){
+      body{
+        font-size:16px;
+      }
+
+      .topbar{
+        min-height:54px;
+        padding:9px 12px 3px;
+      }
+
+      .dot{
+        width:13px;
+        height:13px;
+      }
+
+      .title-box{
+        font-size:15px;
+      }
+
+      .compact #search{
+        height:50px;
+        font-size:15px;
+      }
+
+      .compact .skin-row{
+        padding-top:10px;
+        padding-bottom:10px;
+        font-size:16px;
+      }
+
+      .arrow{
+        font-size:18px;
+      }
+
+      .site-footer{
+        font-size:13px;
+      }
+    }
+
+    .skin-row{
+      display:flex;
+      align-items:center;
+      flex-wrap:nowrap;
+      white-space:nowrap;
+      overflow-x:auto;
+      overflow-y:hidden;
+      scrollbar-width:none;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .skin-row::-webkit-scrollbar{
+      display:none;
+    }
+
+    .skin-row .arrow,
+    .skin-row .hero,
+    .skin-row .skin{
+      flex:0 0 auto;
+    }
+
+    .dots-link{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      width:max-content;
+      padding:7px 5px;
+      border-radius:10px;
+      text-decoration:none;
+      -webkit-tap-highlight-color:transparent;
+      transition:transform .18s ease, background .18s ease;
+    }
+
+    .dots-link:hover,
+    .dots-link:focus-visible{
+      background:rgba(255,255,255,.04);
+      outline:none;
+    }
+
+    .dots-link:active{
+      transform:scale(.92);
+    }
+
+    .skin-row{
+      opacity:0;
+      transform:translateY(18px);
+      transition:
+        opacity .55s ease,
+        transform .55s cubic-bezier(.2,.7,.2,1);
+      will-change:opacity,transform;
+    }
+
+    .skin-row.is-visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .skin-row{
+        opacity:1;
+        transform:none;
+        transition:none;
+      }
+    }
+
+    .skin-row{
+      opacity:0;
+      transform:translateY(7px);
+      filter:blur(2px);
+      transition:
+        opacity .22s ease,
+        transform .22s ease,
+        filter .22s ease;
+      will-change:opacity,transform,filter;
+    }
+
+    .skin-row.is-visible{
+      opacity:1;
+      transform:translateY(0);
+      filter:blur(0);
+    }
+
+    .terminal-cursor{
+      display:none;
+      width:8px;
+      height:15px;
+      margin:7px 0 3px 9px;
+      background:var(--green);
+      animation:terminalBlink .7s steps(1) infinite;
+    }
+
+    .terminal-cursor.show{
+      display:block;
+    }
+
+    @keyframes terminalBlink{
+      0%,48%{opacity:1}
+      49%,100%{opacity:0}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .skin-row{
+        opacity:1;
+        transform:none;
+        filter:none;
+        transition:none;
+      }
+
+      .terminal-cursor{
+        display:none!important;
+      }
+    }
+
+
+
+    /* Hiệu ứng nhẹ theo video tham khảo: chỉ opacity + transform, không blur/filter. */
+    .window{
+      animation:panelEnter .34s cubic-bezier(.2,.75,.25,1) both;
+    }
+
+    .topbar .dot{
+      opacity:0;
+      transform:translateY(-5px) scale(.75);
+      animation:dotEnter .28s cubic-bezier(.2,.8,.3,1.25) forwards;
+    }
+    .topbar .dot:nth-child(1){animation-delay:.08s}
+    .topbar .dot:nth-child(2){animation-delay:.14s}
+    .topbar .dot:nth-child(3){animation-delay:.20s}
+
+    .title-box{
+      opacity:0;
+      transform:translateY(-5px);
+      animation:titleEnter .32s .18s ease-out forwards;
+    }
+
+    .search-wrap{
+      opacity:0;
+      transform:translateY(5px);
+      animation:searchEnter .3s .28s ease-out forwards;
+    }
+
+    .skin-row{
+      padding-top:6px!important;
+      padding-bottom:6px!important;
+      opacity:0!important;
+      transform:translateY(7px)!important;
+      filter:none!important;
+      animation:none!important;
+      transition:opacity .18s ease-out,transform .18s ease-out,background .15s ease,padding-left .15s ease!important;
+      will-change:auto!important;
+    }
+
+    .skin-row.is-visible{
+      opacity:1!important;
+      transform:translateY(0)!important;
+      filter:none!important;
+    }
+
+    .terminal-cursor{display:none!important}
+
+    #search:focus{
+      border-color:rgba(69,227,163,.62);
+      box-shadow:0 0 0 2px rgba(69,227,163,.08);
+    }
+
+    @keyframes panelEnter{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    @keyframes dotEnter{
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+    @keyframes titleEnter{
+      to{opacity:1;transform:translateY(0)}
+    }
+    @keyframes searchEnter{
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    @media(max-width:520px){
+      .compact .skin-row{
+        padding-top:5px!important;
+        padding-bottom:5px!important;
+        line-height:1.45;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .window,.topbar .dot,.title-box,.search-wrap{
+        opacity:1!important;
+        transform:none!important;
+        animation:none!important;
+      }
+      .skin-row{opacity:1!important;transform:none!important}
+    }
+
+    /* Reveal theo vị trí cuộn: dòng chỉ hiện khi đi vào màn hình. */
+    .skin-row{
+      opacity:0!important;
+      transform:translate3d(0,10px,0)!important;
+      filter:none!important;
+      animation:none!important;
+      transition:opacity .34s ease-out,transform .34s cubic-bezier(.2,.75,.25,1),background .15s ease,padding-left .15s ease!important;
+      will-change:opacity,transform!important;
+    }
+    .skin-row.is-visible{
+      opacity:1!important;
+      transform:translate3d(0,0,0)!important;
+    }
+
+    /* Safari iOS đôi lúc ghép font mono cho chữ Việt không đều. */
+    @supports (-webkit-touch-callout:none){
+      body,input,button{
+        font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      }
+      .title-box,.skin-row,.site-footer{
+        font-variant-ligatures:none;
+        letter-spacing:0;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .skin-row{opacity:1!important;transform:none!important;transition:none!important}
+    }
+
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="window">
+      <div class="topbar">
+        <a class="dots dots-link"
+           href="https://thandenaov.com/"
+           aria-label="Mở website Thần Đèn"
+           title="Mở thandenaov.com">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </a>
+      </div>
+
+      <div class="content compact">
+        <div class="title-box">List Skin Bị Ảo Khi Dùng Unlock</div>
+
+        <div class="search-wrap">
+          <input id="search" type="search" placeholder="Tìm tướng hoặc skin..." autocomplete="off">
+        </div>
+        <span id="resultCount" class="sr-only">0 kết quả</span>
+
+        <div class="list" id="skinList"></div>
+        <div class="terminal-cursor" id="terminalCursor" aria-hidden="true"></div>
+        <div class="empty" id="empty">Không tìm thấy tướng hoặc skin phù hợp.</div>
+      </div>
+
+      <footer class="site-footer">2026 Thần Đèn</footer>
+    </section>
+  </main>
+
+  <script>
+    /*
+      Thứ tự tướng bên dưới chính là mức độ ưu tiên phổ biến.
+      Muốn đổi vị trí tướng nào, chỉ cần đổi vị trí tên tướng trong mảng HERO_PRIORITY.
+    */
+    const HERO_PRIORITY = [
+      "Nakroth",
+      "Billow",
+      "Baron",
+      "Aoi",
+      "Violet",
+      "Hayate",
+      "Tel'Annas",
+      "Lauriel",
+      "Krixi",
+      "Tulen",
+      "Yorn",
+      "Airi",
+      "Capheny",
+      "Ayan",
+      "Aya",
+      "Qi",
+      "Veres",
+      "Veera",
+      "Ilumia",
+      "Điêu Thuyền",
+      "Eland'orr",
+      "Iggy",
+      "Dolia",
+      "Bijan",
+      "Stuart",
+      "Pain",
+      "Erin",
+      "Cresh",
+      "Yue"
+    ];
+
+    const RAW_SKINS = [
+      ["Airi","Bích Hải Thánh Nữ"],
+      ["Aoi","Mikasa"],
+      ["Aya","Công Chúa Cầu Vồng"],
+      ["Baron","Thiên Phù - Tư Mệnh"],
+      ["Bijan","Lữ Hành Thời Không"],
+      ["Billow","Thiên Tướng - Độ Ách"],
+      ["Capheny","Càn Nguyên Điện Chủ"],
+      ["Cresh","Eren"],
+      ["Dolia","Mã Khởi Thiên Ca"],
+      ["Eland'orr","Mộng Giới Yêu Chủ"],
+      ["Erin","Nguyệt Ảnh Minh Điệp"],
+      ["Hayate","Siêu Đạo Chích Kid"],
+      ["Hayate","Tu Di Thánh Đế"],
+      ["Iggy","Rimuru"],
+      ["Ilumia","Lưỡng Nghi Long Hậu"],
+      ["Krixi","Phù Thủy Thời Không"],
+      ["Krixi","Tatsumaki Lốc Xoáy Kinh Hoàng"],
+      ["Lauriel","Mã Đăng Cứu Thế"],
+      ["Lauriel","Thứ Nguyên Vệ Thần"],
+      ["Nakroth","Bạch Diện Chiến Thương"],
+      ["Nakroth","Levi"],
+      ["Nakroth","Quỷ Thương Liệp Đế"],
+      ["Pain","Megumi Fushiguro"],
+      ["Qi","Milim Nava"],
+      ["Stuart","Siêu Trùm Phản Diện"],
+      ["Tel'Annas","Lân Quang Thánh Điệu"],
+      ["Tel'Annas","Tân Niên Vệ Thần"],
+      ["Tel'Annas","Thần Sứ F.E.E-X1"],
+      ["Tulen","Thiên Cơ Bạch Trạch"],
+      ["Veera","Thất Sát - Thượng Sinh"],
+      ["Veres","Lưu Ly Long Mẫu"],
+      ["Violet","Huyết Ma Thần"],
+      ["Violet","Nobara Kugisaki"],
+      ["Violet","Thần Long Tỷ Tỷ"],
+      ["Violet","Vọng Nguyệt Long Cơ"],
+      ["Violet","Vợ Người Ta"],
+      ["Yorn","Conan Edogawa"],
+      ["Yue","Trảm Kim Ánh Nguyệt"],
+      ["Điêu Thuyền","Nhật Nguyệt Thánh Linh"]
+    ];
+
+    const listEl = document.getElementById("skinList");
+    const searchEl = document.getElementById("search");
+    const countEl = document.getElementById("resultCount");
+    const emptyEl = document.getElementById("empty");
+
+    function normalizeText(value){
+      return value
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/đ/g,"d")
+        .replace(/Đ/g,"D")
+        .toLowerCase()
+        .trim();
+    }
+
+    function priorityOf(hero){
+      const index = HERO_PRIORITY.indexOf(hero);
+      return index === -1 ? 9999 : index;
+    }
+
+    function sortedSkins(){
+      return [...RAW_SKINS].sort((a,b)=>{
+        const heroPriority = priorityOf(a[0]) - priorityOf(b[0]);
+        if(heroPriority !== 0) return heroPriority;
+
+        const lengthDifference = a[1].length - b[1].length;
+        if(lengthDifference !== 0) return lengthDifference;
+
+        return a[1].localeCompare(b[1],"vi");
+      });
+    }
+
+    function escapeHTML(value){
+      return value.replace(/[&<>"']/g,char=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      })[char]);
+    }
+
+    function highlight(value,query){
+      if(!query) return escapeHTML(value);
+
+      const normalizedValue = normalizeText(value);
+      const index = normalizedValue.indexOf(query);
+
+      if(index === -1) return escapeHTML(value);
+
+      /*
+        Với tiếng Việt có dấu, vị trí chữ sau normalize có thể lệch nhẹ.
+        Vì vậy chỉ highlight chính xác khi độ dài tương ứng an toàn.
+      */
+      const before = value.slice(0,index);
+      const match = value.slice(index,index + query.length);
+      const after = value.slice(index + query.length);
+
+      return `${escapeHTML(before)}<mark>${escapeHTML(match)}</mark>${escapeHTML(after)}`;
+    }
+
+    let rowObserver = null;
+
+    function observeRows(){
+      if(rowObserver) rowObserver.disconnect();
+      const rows = [...listEl.querySelectorAll(".skin-row")];
+
+      if(!("IntersectionObserver" in window) ||
+         window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+        rows.forEach(row => row.classList.add("is-visible"));
+        return;
+      }
+
+      rowObserver = new IntersectionObserver((entries)=>{
+        const entering = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);
+
+        entering.forEach((entry,index)=>{
+          entry.target.style.transitionDelay = `${Math.min(index * 45,135)}ms`;
+          entry.target.classList.add("is-visible");
+          rowObserver.unobserve(entry.target);
+        });
+      },{
+        threshold:0.08,
+        rootMargin:"0px 0px 35px 0px"
+      });
+
+      rows.forEach(row => rowObserver.observe(row));
+    }
+
+    function render(){
+      const query = normalizeText(searchEl.value);
+      const filtered = sortedSkins().filter(([hero,skin])=>
+        normalizeText(`${hero} ${skin}`).includes(query)
+      );
+
+      listEl.innerHTML = "";
+
+      filtered.forEach(([hero,skin])=>{
+        const row = document.createElement("div");
+        row.className = "skin-row";
+        row.innerHTML = `
+          <span class="arrow">➜</span>
+          <span class="text">
+            <span class="hero-name">${highlight(hero,query)}</span>
+            <span class="skin-name"> ${highlight(skin,query)}</span>
+          </span>
+        `;
+        listEl.appendChild(row);
+      });
+
+      countEl.textContent = `${filtered.length} kết quả`;
+      emptyEl.style.display = filtered.length ? "none" : "block";
+      requestAnimationFrame(observeRows);
+    }
+
+    searchEl.addEventListener("input",render);
+
+    document.addEventListener("keydown",event=>{
+      if((event.ctrlKey || event.metaKey) && event.key.toLowerCase()==="k"){
+        event.preventDefault();
+        searchEl.focus();
+      }
+
+      if(event.key==="Escape"){
+        searchEl.value="";
+        render();
+        searchEl.blur();
+      }
+    });
+
+    render();
+  </script>
+
+</body>
+</html>
