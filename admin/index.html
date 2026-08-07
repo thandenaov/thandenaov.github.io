@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="vi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quản lý website</title><link rel="stylesheet" href="admin.css?v=23"></head>
+<body>
+<div id="loginGate" class="login-gate"><form id="loginForm" class="login-card"><h1>Đăng nhập Admin</h1><p>Nhập mật khẩu để mở trang quản lý.</p><label>Mật khẩu<input id="loginPass" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu admin"></label><button type="submit">Đăng nhập</button><p id="loginError" class="login-error"></p></form></div>
+<main id="adminApp" hidden>
+<header><div><h1>Quản lý website</h1><p>Chỉnh toàn bộ nội dung và lưu cho mọi người bằng GitHub</p></div><div class="header-actions"><a href="../">Xem trang chính</a><button id="logoutBtn" class="logout">Đăng xuất</button></div></header>
+<section class="panel"><h2>GitHub Token</h2><div id="githubFields" class="grid"></div><div class="github-actions"><button id="testGithubBtn" class="ghost-inline">Kiểm tra token</button><button id="githubSaveBtn">Lưu lên GitHub</button></div><p id="githubStatus" class="github-status"></p></section>
+<section class="panel"><h2>Thông tin đầu trang</h2><div id="mainFields" class="grid"></div></section>
+<section class="panel"><h2>Nhạc và hiệu ứng</h2><div id="effectFields" class="grid"></div></section>
+<section class="panel"><div class="bar"><h2>Thông báo</h2><button id="addNotice">+ Thêm thông báo</button></div><div id="noticeList"></div></section>
+<section class="panel"><div class="bar"><h2>Icon liên kết</h2><button id="addSocial">+ Thêm icon</button></div><div id="socialList"></div></section>
+<section class="panel"><div class="bar"><h2>Sản phẩm</h2><button id="addProduct">+ Thêm sản phẩm</button></div><div id="productList"></div></section>
+<div class="sticky"><button id="resetBtn" class="ghost">Mặc định</button><button id="exportBtn" class="ghost">Xuất data.json</button><button id="saveBtn">Lưu xem thử</button></div>
+</main>
+<script src="admin.js?v=23"></script>
+</body></html>

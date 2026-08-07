@@ -1,0 +1,88 @@
+{
+  "version": 12,
+  "profileName": "Văn Thắng iOS",
+  "helloText": "Hi, i am",
+  "subtitle": "Gamer.",
+  "avatar": "assets/avatar.svg",
+  "bellIcon": "assets/bell.svg",
+  "footer": "© Designer by Văn Thắng iOS 2026",
+  "counterPrefix": "thandenaov-github-io-v5",
+  "socials": [
+    {
+      "image": "assets/discord.svg",
+      "url": "#",
+      "name": "Discord"
+    },
+    {
+      "image": "assets/telegram.svg",
+      "url": "#",
+      "name": "Telegram"
+    },
+    {
+      "image": "assets/youtube.svg",
+      "url": "#",
+      "name": "YouTube"
+    }
+  ],
+  "products": [
+    {
+      "title": "MENU AOV MAP V1",
+      "description": "Cập Nhật Ngày 28/7",
+      "cover": "assets/cover1.svg",
+      "logo": "assets/logo.svg",
+      "platform": " iOS",
+      "downloadUrl": "#",
+      "keyUrl": "#",
+      "previewImage": "assets/cover1.svg",
+      "guide": "Bước 1: Nhấn Tải Xuống.\nBước 2: Cài đặt tệp.\nBước 3: Nhấn Get Key để nhận mã.",
+      "downloadOptions": [],
+      "keyOptions": [],
+      "guideType": "text",
+      "guideText": "Bước 1: Nhấn Tải Xuống.\nBước 2: Cài đặt tệp.\nBước 3: Nhấn Get Key để nhận mã.",
+      "guideUrl": "",
+      "guideVideo": "",
+      "previewImages": [
+        "assets/cover1.svg"
+      ],
+      "guideOptions": []
+    },
+    {
+      "title": "MENU AOV MOD V2",
+      "description": "Cập Nhật Ngày 28/6",
+      "cover": "assets/cover2.svg",
+      "logo": "assets/logo.svg",
+      "platform": " iOS",
+      "downloadUrl": "#",
+      "keyUrl": "#",
+      "previewImage": "assets/cover2.svg",
+      "guide": "Nhấn Tải Xuống và làm theo hướng dẫn hiển thị trên trang tải.",
+      "downloadOptions": [],
+      "keyOptions": [],
+      "guideType": "text",
+      "guideText": "Nhấn Tải Xuống và làm theo hướng dẫn hiển thị trên trang tải.",
+      "guideUrl": "",
+      "guideVideo": "",
+      "previewImages": [
+        "assets/cover2.svg"
+      ],
+      "guideOptions": []
+    }
+  ],
+  "musicUrl": "",
+  "musicVolume": 0.45,
+  "musicAutoplay": true,
+  "effects": {
+    "particles": true,
+    "avatarGlow": true,
+    "verifiedShine": true,
+    "backgroundMotion": true
+  },
+  "notifications": [
+    {
+      "title": "Chào mừng",
+      "text": "Các cập nhật mới sẽ hiển thị tại đây.",
+      "link": "",
+      "linkLabel": "Xem chi tiết"
+    }
+  ]
+}
